@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package greeting;
+
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+
+
+option go_package = "github.com/kuppakoffe/proto-api/api/proto;greeting";
+
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+  info : {
+    title : "Greeting";
+    version
+        :
+        "1.0"
+    ;
+  }
+  ;
+
+
+  schemes
+      :
+      HTTP
+  ;
+  schemes
+      :
+      HTTPS
+  ;
+  consumes
+      :
+      "application/json"
+  ;
+  produces
+      :
+      "application/json"
+  ;
+
+  responses
+      :
+  {
+    key
+        :
+        "400"
+    ;
+    value
+        :
+    {
+      description
+          :
+          "Invalid Request."
+    }
+  }
+  responses
+      :
+  {
+    key
+        :
+        "401"
+    value
+        :
+    {
+      description
+          :
+          "Token Expired."
+    }
+  }
+}
+;
+
+
+message GreetRequest {
+  string name = 1;
+}
+
+
+message GreetResponse {
+  string message = 1;
+}
+
+service Greeting {
+  // Unary service, get request and respond with result
+  rpc GreetingGet (GreetRequest) returns (GreetResponse) {
+    option (google.api.http) = {
+      get : "/v1/greeting",
+    };
+  };
+}
